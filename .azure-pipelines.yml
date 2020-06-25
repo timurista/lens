@@ -130,7 +130,9 @@ jobs:
           sudo apt-get install libgconf-2-4 conntrack -y
           //curl -LO https://storage.googleapis.com/minikube/releases/v1.10.1/minikube-linux-amd64
           //sudo install minikube-linux-amd64 /usr/local/bin/minikube
+          export CHANGE_MINIKUBE_NONE_USER=true
           sudo minikube start --driver=none --alsologtostderr -v=4
+          sudo mv /home/vsts/.kube /home/vsts/.minikube $HOME
           sudo chmod --recursive 777 $HOME/.minikube
           sudo chmod --recursive 777 $HOME/.kube
         displayName: Install integration test dependencies
