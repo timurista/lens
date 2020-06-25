@@ -49,8 +49,8 @@ describe("app start", () => {
     const status = spawnSync("minikube status", {shell: true})
     if (status.status !== 0) {
       console.log(status.status)
-      console.log(status.stdout)
-      console.log(status.stderr)
+      console.log(status.stdout.toString())
+      console.log(status.stderr.toString())
       console.warn("minikube not running, skipping test")
       return
     }
