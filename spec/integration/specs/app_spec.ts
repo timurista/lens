@@ -48,6 +48,9 @@ describe("app start", () => {
   it('allows to add a cluster', async () => {
     const status = spawnSync("minikube status", {shell: true})
     if (status.status !== 0) {
+      console.log(status.status)
+      console.log(status.stdout)
+      console.log(status.stderr)
       console.warn("minikube not running, skipping test")
       return
     }
