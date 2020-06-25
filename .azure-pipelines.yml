@@ -132,9 +132,9 @@ jobs:
           //sudo install minikube-linux-amd64 /usr/local/bin/minikube
           export CHANGE_MINIKUBE_NONE_USER=true
           sudo minikube start --driver=none --alsologtostderr -v=4
-          sudo mv /home/vsts/.kube /home/vsts/.minikube $HOME
           sudo chmod --recursive 777 $HOME/.minikube
           sudo chmod --recursive 777 $HOME/.kube
+          minikube status
         displayName: Install integration test dependencies
       - script: xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' make integration-linux
         displayName: Run integration tests
