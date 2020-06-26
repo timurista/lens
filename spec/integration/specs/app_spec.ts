@@ -71,10 +71,11 @@ describe("app start", () => {
     console.log("Minikube cluster added")
     await waitForMinikubeDashboard(app)
     console.log("Minikube dashboard visible")
-    await app.client.click('a[href="/nodes"]')
+    /*await app.client.click('a[href="/nodes"]')
     console.log("Nodes clicked")
     await app.client.waitUntilTextExists("div.TableCell", "minikube")
     console.log("Minikube node visible")
+    */
   })
 
   /*it('allows to create a pod', async () => {
