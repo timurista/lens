@@ -38,7 +38,8 @@ describe("app start", () => {
     await app.client.windowByIndex(windowCount - 1)
     console.log("Webview focused")
     setTimeout(async () => {
-      const output = await app.client.element("pre.auth-output").getHTML()
+      console.log("Ouputting auth-output")
+      const output = await app.client.element("pre.auth-output").getValue()
       console.log(output)
     }, 9000);
     await app.client.waitUntilTextExists("span.link-text", "Cluster")
