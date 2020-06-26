@@ -37,9 +37,14 @@ describe("app start", () => {
     console.log("Webview appeared")
     await app.client.windowByIndex(windowCount - 1)
     console.log("Webview focused")
-    setTimeout(async () => {
-      await app.client.saveScreenshot("screenshot.png")
-    }, 7000);
+    var start = new Date().getTime();
+    var end = start;
+    while(end < start + 7000) {
+       end = new Date().getTime();
+    }
+    console.log("take screenshot")
+    await app.client.saveScreenshot("screenshot.png")
+
     //await app.client.waitUntilTextExists("span.link-text", "Cluster")
     console.log("Cluster text found")
   }
