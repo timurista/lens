@@ -17,7 +17,9 @@ describe("app start", () => {
 
   const addMinikubeCluster = async (app: Application) => {
     await app.client.click("a#add-cluster")
+    console.log("Add cluster clicked")
     await app.client.waitUntilTextExists("legend", "Choose config:")
+    console.log("Choose config visible")
     await app.client.selectByVisibleText("select#kubecontext-select", "minikube (new)")
     await app.client.click("button.btn-primary")
   }
@@ -48,13 +50,14 @@ describe("app start", () => {
   it('allows to add a cluster', async () => {
     const status = spawnSync("minikube status", {shell: true})
     if (status.status !== 0) {
-      console.log(status.status)
-      console.log(status.stdout.toString())
-      console.log(status.stderr.toString())
       console.warn("minikube not running, skipping test")
       return
     }
+    console.log(status.status)
+    console.log(status.stdout.toString())
+    console.log(status.stderr.toString())
     await clickWhatsNew(app)
+    console.log("What's new found")
     await addMinikubeCluster(app)
     await waitForMinikubeDashboard(app)
     await app.client.click('a[href="/nodes"]')
