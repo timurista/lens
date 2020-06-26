@@ -37,12 +37,10 @@ describe("app start", () => {
     console.log("Webview appeared")
     await app.client.windowByIndex(windowCount - 1)
     console.log("Webview focused")
-    setTimeout(async () => {
-      console.log("Ouputting auth-output")
-      const output = await app.client.element("pre.auth-output").getValue()
-      console.log(output)
-    }, 9000);
-    await app.client.waitUntilTextExists("span.link-text", "Cluster")
+    await app.client.waitUntilTextExists("span.link-text", "Cluster").catch(async (err) => {
+      await app.client.saveScreenshot("screenshot.png")
+      throw "Failed to open dashboard for Minikube"
+    })
     console.log("Cluster text found")
   }
 
