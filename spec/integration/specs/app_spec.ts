@@ -69,7 +69,9 @@ describe("app start", () => {
     console.log("What's new found")
     await addMinikubeCluster(app)
     console.log("Minikube cluster added")
-    await waitForMinikubeDashboard(app)
+    await waitForMinikubeDashboard(app).catch((error) => {
+      throw error
+    })
     console.log("Minikube dashboard visible")
     await app.client.click('a[href="/nodes"]')
     console.log("Nodes clicked")
