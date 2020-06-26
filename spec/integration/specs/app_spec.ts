@@ -21,18 +21,23 @@ describe("app start", () => {
     await app.client.waitUntilTextExists("legend", "Choose config:")
     console.log("Choose config visible")
     await app.client.selectByVisibleText("select#kubecontext-select", "minikube (new)")
+    console.log("minikube (new added)")
     await app.client.click("button.btn-primary")
   }
 
   const waitForMinikubeDashboard = async (app: Application) => {
     await app.client.waitUntilTextExists("pre.auth-output", "Authentication proxy started")
+    console.log("Authentication proxy started seen")
     let windowCount = await app.client.getWindowCount()
+    console.log("Window count "+windowCount)
     // wait for webview to appear on window count
     while (windowCount == 1) {
       windowCount = await app.client.getWindowCount()
     }
+    console.log("Webview appeared")
     await app.client.windowByIndex(windowCount - 1)
     await app.client.waitUntilTextExists("span.link-text", "Cluster")
+    console.log("Cluster text found")
   }
 
   beforeEach(async () => {
@@ -59,9 +64,13 @@ describe("app start", () => {
     await clickWhatsNew(app)
     console.log("What's new found")
     await addMinikubeCluster(app)
+    console.log("Minikube cluster added")
     await waitForMinikubeDashboard(app)
+    console.log("Minikube dashboard visible")
     await app.client.click('a[href="/nodes"]')
+    console.log("Nodes clicked")
     await app.client.waitUntilTextExists("div.TableCell", "minikube")
+    console.log("Minikube node visible")
   })
 
   it('allows to create a pod', async () => {
