@@ -17,35 +17,20 @@ describe("app start", () => {
 
   const addMinikubeCluster = async (app: Application) => {
     await app.client.click("a#add-cluster")
-    console.log("Add cluster clicked")
     await app.client.waitUntilTextExists("legend", "Choose config:")
-    console.log("Choose config visible")
     await app.client.selectByVisibleText("select#kubecontext-select", "minikube (new)")
-    console.log("minikube (new added)")
     await app.client.click("button.btn-primary")
   }
 
   const waitForMinikubeDashboard = async (app: Application) => {
     await app.client.waitUntilTextExists("pre.auth-output", "Authentication proxy started")
-    console.log("Authentication proxy started seen")
     let windowCount = await app.client.getWindowCount()
-    console.log("Window count "+windowCount)
     // wait for webview to appear on window count
     while (windowCount == 1) {
       windowCount = await app.client.getWindowCount()
     }
-    console.log("Webview appeared")
     await app.client.windowByIndex(windowCount - 1)
-    console.log("Webview focused")
-    var start = new Date().getTime();
-    var end = start;
-    while(end < start + 7000) {
-       end = new Date().getTime();
-    }
-    console.log("take screenshot")
-    await app.client.saveScreenshot("screenshot.png")
-
-    //await app.client.waitUntilTextExists("span.link-text", "Cluster")
+    await app.client.waitUntilTextExists("span.link-text", "Cluster")
     console.log("Cluster text found")
   }
 
@@ -67,31 +52,46 @@ describe("app start", () => {
       console.warn("minikube not running, skipping test")
       return
     }
-    console.log(status.status)
-    console.log(status.stdout.toString())
-    console.log(status.stderr.toString())
-    await clickWhatsNew(app)
-    console.log("What's new found")
-    await addMinikubeCluster(app)
-    console.log("Minikube cluster added")
-    await waitForMinikubeDashboard(app)
-    console.log("Minikube dashboard visible")
-    /*await app.client.click('a[href="/nodes"]')
-    console.log("Nodes clicked")
+    try {
+      await clickWhatsNew(app)
+    } catch (err) {
+      fail("Failed to click What's new")
+    }
+    try {
+      await addMinikubeCluster(app)
+    } catch (err) {
+      fail("Failed to add minikube")
+    }
+    try {
+      await waitForMinikubeDashboard(app)
+    } catch (err) {
+      fail("Failed to open minikube dashboard")
+    }
+    await app.client.click('a[href="/nodes"]')
     await app.client.waitUntilTextExists("div.TableCell", "minikube")
-    console.log("Minikube node visible")
-    */
   })
 
-  /*it('allows to create a pod', async () => {
+  it('allows to create a pod', async () => {
     const status = spawnSync("minikube status", {shell: true})
     if (status.status !== 0) {
       console.warn("minikube not running, skipping test")
       return
     }
-    await clickWhatsNew(app)
-    await addMinikubeCluster(app)
-    await waitForMinikubeDashboard(app)
+    try {
+      await clickWhatsNew(app)
+    } catch (err) {
+      fail("Failed to click What's new")
+    }
+    try {
+      await addMinikubeCluster(app)
+    } catch (err) {
+      fail("Failed to add minikube")
+    }
+    try {
+      await waitForMinikubeDashboard(app)
+    } catch (err) {
+      fail("Failed to open minikube dashboard")
+    }
     await app.client.click(".sidebar-nav #workloads span.link-text")
     await app.client.waitUntilTextExists('a[href="/pods"]', "Pods")
     await app.client.click('a[href="/pods"]')
@@ -118,7 +118,6 @@ describe("app start", () => {
     await app.client.click(".name=nginx")
     await app.client.waitUntilTextExists("div.drawer-title-text", "Pod: nginx")
   })
-  */
 
   afterEach(async () => {
     if (app && app.isRunning()) {
