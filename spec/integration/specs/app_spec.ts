@@ -36,6 +36,7 @@ describe("app start", () => {
     }
     console.log("Webview appeared")
     await app.client.windowByIndex(windowCount - 1)
+    console.log("Webview focused")
     await app.client.waitUntilTextExists("span.link-text", "Cluster")
     console.log("Cluster text found")
   }
