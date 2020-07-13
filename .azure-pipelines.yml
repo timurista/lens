@@ -128,9 +128,11 @@ jobs:
           sudo apt-get install libgconf-2-4 conntrack -y
           curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
           sudo install minikube-linux-amd64 /usr/local/bin/minikube
+          echo "I am $(whoami)"
+          echo "user is $USER"
+          echo "home is $HOME"
           sudo chown -R $USER $HOME/.kube $HOME/.minikube
           sudo minikube start --driver=none
-          whoami
           ls -l $HOME/.kube
           ls -l $HOME/.minikube
           minikube status
